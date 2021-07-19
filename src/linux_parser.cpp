@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <iostream>
 
 #include "linux_parser.h"
 
@@ -10,6 +11,19 @@ using std::stof;
 using std::string;
 using std::to_string;
 using std::vector;
+
+// helper functions
+int GetNumber(string file, string name) {
+    string description, number, line;
+    std::fstream filestream(file);
+
+    while (std::getline(filestream, line)) {
+        std::istringstream sstream(line);
+        sstream >> description >> number;
+
+        if (description == name) return std::stoi(number);
+    }
+}
 
 // DONE: An example of how to read data from the filesystem
 string LinuxParser::OperatingSystem() {
@@ -40,9 +54,10 @@ string LinuxParser::Kernel() {
   string line;
   std::ifstream stream(kProcDirectory + kVersionFilename);
   if (stream.is_open()) {
-    std::getline(stream, line);
+    std::getline(stream, line); // only one line?
     std::istringstream linestream(line);
     linestream >> os >> version >> kernel;
+    // format in /proc/version is 'Linux version kernel ...'
   }
   return kernel;
 }
@@ -90,10 +105,14 @@ long LinuxParser::IdleJiffies() { return 0; }
 vector<string> LinuxParser::CpuUtilization() { return {}; }
 
 // TODO: Read and return the total number of processes
-int LinuxParser::TotalProcesses() { return 0; }
+int LinuxParser::TotalProcesses() {
+    return GetNumber(kProdDirectory + kStatFilename, "processes");
+}
 
 // TODO: Read and return the number of running processes
-int LinuxParser::RunningProcesses() { return 0; }
+int LinuxParser::RunningProcesses() {
+    return GetNumber(kProdDirectory + kStatFilename, "procs_running");
+}
 
 // TODO: Read and return the command associated with a process
 // REMOVE: [[maybe_unused]] once you define the function
