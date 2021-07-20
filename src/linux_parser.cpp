@@ -123,29 +123,46 @@ long LinuxParser::UpTime() {
 
 // DONE: Read and return the number of jiffies for the system
 long LinuxParser::Jiffies() {
-    vector<string> jiffies_strings GetWordsFromLine(kProcDirectory + kStatFilename);
-    int size = jiffies_strings.size();
-    int jiffies = 0;
-
-    for (int n = 1; n <= size; n++) {
-        jiffies += std::stoi(jiffies_strings[n]);
-    }
-
-    return jiffies;
+    return LinuxParser::ActiveJiffies + LinuxParser::IdleJiffies;
 }
 
 // TODO: Read and return the number of active jiffies for a PID
 // REMOVE: [[maybe_unused]] once you define the function
 long LinuxParser::ActiveJiffies(int pid[[maybe_unused]]) { return 0; }
 
-// TODO: Read and return the number of active jiffies for the system
-long LinuxParser::ActiveJiffies() { return 0; }
+// DONE: Read and return the number of active jiffies for the system
+long LinuxParser::ActiveJiffies() {
+    // TODO: ActiveJiffies = NonIdle?
+    // if so: ActiveJiffies = user + nice + system + irq + softirq + steal
+    // TODO: need CPUStates?
+    vector<string> jiffies_strings GetWordsFromLine(kProcDirectory + kStatFilename, "cpu");
+    int user = std::stoi(jiffies_strings[1]);
+    int nice = std::stoi(jiffies_strings[2]);
+    int system = std::stoi(jiffies_strings[3]);
+    int irq = std::stoi(jiffies_strings[6]);
+    int softirq = std::stoi(jiffies_strings[7]);
+    int steal = std::stoi(jiffies_strings[8]);
 
-// TODO: Read and return the number of idle jiffies for the system
-long LinuxParser::IdleJiffies() { return 0; }
+    return user + nice + system + irq + softirq + steal;
+}
+
+// DONE: Read and return the number of idle jiffies for the system
+long LinuxParser::IdleJiffies() {
+    // IdleJiffies = idle + iowait
+    vector<string> jiffies_strings GetWordsFromLine(kProcDirectory + kStatFilename, "cpu");
+    int idle = std::stoi(jiffies_strings[4]);
+    int iowait = std::stoi(jiffies_strings[5]);
+
+    return idle + iowait;
+}
 
 // TODO: Read and return CPU utilization
-vector<string> LinuxParser::CpuUtilization() { return {}; }
+float LinuxParser::CpuUtilization() {
+    // instead of returning utilization of all CPUs (vector<string>)
+    // only the aggreated utilization (-> float)
+    return LinuxParser::ActiveJiffies/LinuxParser::Jiffies; // TODO: problem with conversion?
+}
+
 
 // DONE: Read and return the total number of processes
 int LinuxParser::TotalProcesses() {
