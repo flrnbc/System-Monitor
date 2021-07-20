@@ -13,16 +13,36 @@ using std::to_string;
 using std::vector;
 
 // helper functions
-int GetNumber(string file, string name) {
-    string description, number, line;
+string GetValue(string file, string wanted_key) {
+    string key, value, line;
     std::fstream filestream(file);
 
     while (std::getline(filestream, line)) {
         std::istringstream sstream(line);
-        sstream >> description >> number;
+        sstream >> key >> value;
 
-        if (description == name) return std::stoi(number);
+        if (key == wanted_key) return value;
     }
+}
+
+vector<string> GetWordsFromLine(string file, string wanted_key) {
+    string key, value, line;
+    vector<string> words;
+    std::fstream filestream(file);
+
+    while (std::getline(filestream, line)) {
+        std::istringstream sstream(line);
+        sstream >> key;
+
+        if (key == wanted_key) break;
+    }
+
+    std::istringstream stream(line); // seems to be necessary but why?
+    while (stream >> word) {
+        words.push_back(word);
+    }
+
+    return words;
 }
 
 // DONE: An example of how to read data from the filesystem
@@ -82,8 +102,14 @@ vector<int> LinuxParser::Pids() {
   return pids;
 }
 
-// TODO: Read and return the system memory utilization
-float LinuxParser::MemoryUtilization() { return 0.0; }
+// DONE: Read and return the system memory utilization
+float LinuxParser::MemoryUtilization() {
+    string file = kProdcDirectory + kMeminfoFilename;
+    float MemTotal = std::stof(GetValue(file, "MemTotal:"));
+    float MemFree = std::stof(GetValue(file, "MemFree:"));
+
+    return MemTotal - MemFree;
+}
 
 // DONE: Read and return the system uptime
 long LinuxParser::UpTime() {
@@ -92,11 +118,21 @@ long LinuxParser::UpTime() {
     std::istringstream sstream(line);
     sstream >> total_time >> idle_time;
 
-    return std::stoi(total_time);
+    return std::stol(total_time);
 }
 
-// TODO: Read and return the number of jiffies for the system
-long LinuxParser::Jiffies() { return 0; }
+// DONE: Read and return the number of jiffies for the system
+long LinuxParser::Jiffies() {
+    vector<string> jiffies_strings GetWordsFromLine(kProcDirectory + kStatFilename);
+    int size = jiffies_strings.size();
+    int jiffies = 0;
+
+    for (int n = 1; n <= size; n++) {
+        jiffies += std::stoi(jiffies_strings[n]);
+    }
+
+    return jiffies;
+}
 
 // TODO: Read and return the number of active jiffies for a PID
 // REMOVE: [[maybe_unused]] once you define the function
@@ -113,12 +149,12 @@ vector<string> LinuxParser::CpuUtilization() { return {}; }
 
 // DONE: Read and return the total number of processes
 int LinuxParser::TotalProcesses() {
-    return GetNumber(kProdDirectory + kStatFilename, "processes");
+    return std::stoi(GetValue(kProdDirectory + kStatFilename, "processes"));
 }
 
 // DONE: Read and return the number of running processes
 int LinuxParser::RunningProcesses() {
-    return GetNumber(kProdDirectory + kStatFilename, "procs_running");
+    return std::stoi(GetValue(kProdDirectory + kStatFilename, "procs_running"));
 }
 
 // TODO: Read and return the command associated with a process
