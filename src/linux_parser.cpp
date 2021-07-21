@@ -190,9 +190,13 @@ int LinuxParser::RunningProcesses() {
 // REMOVE: [[maybe_unused]] once you define the function
 string LinuxParser::Command(int pid[[maybe_unused]]) { return string(); }
 
-// TODO: Read and return the memory used by a process
+// DONE: Read and return the memory used by a process
 // REMOVE: [[maybe_unused]] once you define the function
-string LinuxParser::Ram(int pid[[maybe_unused]]) { return string(); }
+string LinuxParser::Ram(int pid) {
+    string filename = kProcDirectory + std::to_string(pid) + kStatusFilename;
+
+    return GetValue(filename, "VmSize:")) + " KB"; // TODO: convert to MB?
+}
 
 // TODO: Read and return the user ID associated with a process
 // REMOVE: [[maybe_unused]] once you define the function
@@ -202,12 +206,12 @@ string LinuxParser::Uid(int pid[[maybe_unused]]) { return string(); }
 // REMOVE: [[maybe_unused]] once you define the function
 string LinuxParser::User(int pid[[maybe_unused]]) { return string(); }
 
-// TODO: Read and return the uptime of a process
+// DONE: Read and return the uptime of a process
 // REMOVE: [[maybe_unused]] once you define the function
 // process_uptime = system_uptime * sysconf(_SC_CLK_TCK) - starttime  (in jiffies)
-long LinuxParser::UpTime(int pid[[maybe_unused]]) {
+long LinuxParser::UpTime(int pid) {
     string pid_string = std::to_string(pid);
-    string filename = kProcDirectory + pid_string + kStatusFilename;
+    string filename = kProcDirectory + pid_string + kStatFilename;
     long  starttime = std::stol(GetWordsFromLine(filename, "", true)[21]); // in jiffies
 
     return LinuxParser::UpTime() - (starttime / sysconf(_SC_CL_TCK)); // issue with type?
