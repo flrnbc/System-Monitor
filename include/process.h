@@ -19,9 +19,14 @@ class Process {
 
   // TODO: Declare any necessary private members
  private:
+    // permanent private variables
     int pid_;
     std::string user_;
     std::string cmd_;
+    // changing private variables
+    float cpuu_;
+    std::string ram_;
+    long uptime_;
 };
 
 #endif
