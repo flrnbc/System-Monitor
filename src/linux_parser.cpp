@@ -205,4 +205,10 @@ string LinuxParser::User(int pid[[maybe_unused]]) { return string(); }
 // TODO: Read and return the uptime of a process
 // REMOVE: [[maybe_unused]] once you define the function
 // process_uptime = system_uptime * sysconf(_SC_CLK_TCK) - starttime  (in jiffies)
-long LinuxParser::UpTime(int pid[[maybe_unused]]) { return 0; }
+long LinuxParser::UpTime(int pid[[maybe_unused]]) {
+    string pid_string = std::to_string(pid);
+    string filename = kProcDirectory + pid_string + kStatusFilename;
+    long  starttime = std::stol(GetWordsFromLine(filename, "", true)[21]); // in jiffies
+
+    return LinuxParser::UpTime() - (starttime / sysconf(_SC_CL_TCK)); // issue with type?
+}
