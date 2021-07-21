@@ -22,9 +22,6 @@ class Process {
     int pid_;
     std::string user_;
     std::string cmd_;
-    float cpuu_;
-    std::string ram_;
-    long int uptime_;
 };
 
 #endif

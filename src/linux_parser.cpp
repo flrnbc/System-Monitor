@@ -234,9 +234,8 @@ string LinuxParser::User(int pid) {
     return user;
 }
 
-// DONE: Read and return the uptime of a process
+// DONE: Read and return the uptime of a process (in seconds)
 // REMOVE: [[maybe_unused]] once you define the function
-// process_uptime = system_uptime * sysconf(_SC_CLK_TCK) - starttime  (in jiffies)
 long LinuxParser::UpTime(int pid) {
     string pid_string = std::to_string(pid);
     string filename = kProcDirectory + pid_string + kStatFilename;
