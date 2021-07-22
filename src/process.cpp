@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "process.h"
+#include "linux_parser.h"
 
 using std::string;
 using std::to_string;
@@ -14,9 +15,9 @@ Process::Process(int pid) {
     pid_ = pid;
     cmd_ = LinuxParser::Command(pid);
     user_ = LinuxParser::User(pid);
-    cpuu_ = Process::CpuUtilization;
-    ram_ = Process::Ram();
-    uptime_ = Process::UpTime();
+    cpuu_ = LinuxParser::CpuUtilization(pid);
+    ram_ = LinuxParser::Ram(pid);
+    uptime_ = LinuxParser::UpTime(pid);
 }
 
 
@@ -26,10 +27,8 @@ int Process::Pid() {
 }
 
 // DONE: Return this process's CPU utilization
-float Process::CpuUtilization() {
-    // UpTime computed in seconds
-    cpuu_ = (LinuxParser::UpTime(pid_)*sysconf(_SC_CL_TCK))/LinuxParser::ActiveJiffies(pid_);
-    return cpuu_;
+float Process::CpuUtilization() const {
+   	return cpuu_;
 }
 
 // DONE: Return the command that generated this process
@@ -39,7 +38,6 @@ string Process::Command() {
 
 // DONE: Return this process's memory utilization
 string Process::Ram() {
-    ram_ = LinuxParser::Ram(pid_);
     return ram_;
 }
 
@@ -50,12 +48,11 @@ string Process::User() {
 
 // DONE: Return the age of this process (in seconds)
 long int Process::UpTime() {
-    uptime_ = LinuxParser::UpTime(pid_);
-    return uptime_;
+  return uptime_;
 }
 
 // DONE: Overload the "less than" comparison operator for Process objects
 // REMOVE: [[maybe_unused]] once you define the function
 bool Process::operator<(Process const& a) const {
-    return this.CpuUtilization() < a.CpuUtilization(); // use of 'this' correct?
+    return this->CpuUtilization() < a.CpuUtilization(); // use of 'this' correct?
 }
