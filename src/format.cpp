@@ -8,13 +8,12 @@ using std::string;
 // DONE: Complete this helper function
 // INPUT: Long int measuring seconds
 // OUTPUT: HH:MM:SS
-// REMOVE: [[maybe_unused]] once you define the function
 
 // helper function
 string PadZeros(long n, int k) {
     std::ostringstream ss;
 
-    ss << std::setw(k) << std::setfill('0') << n; // note '0'! (C char?)
+    ss << std::setw(k) << std::setfill('0') << n; // note '0' (for a single char, not a string)
     return ss.str();
 }
 

@@ -191,7 +191,7 @@ float LinuxParser::CpuUtilization() {
   float activeJiffies = 1.0 * LinuxParser::ActiveJiffies();
 
   if (jiffies != 0) {
-    return activeJiffies / jiffies; // TODO: problem with conversion?
+    return activeJiffies / jiffies; //
   }
   return 0;
 }
