@@ -1,41 +1,33 @@
-# CppND-System-Monitor
+# System Monitor
 
-Starter code for System Monitor Project in the Object Oriented Programming Course of the [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213). 
+This is a simple tool to show running processes on a Linux machine. It is based on the [starter code](https://github.com/udacity/CppND-System-Monitor) of a project in the [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213). The code in our repository has been reviewed by one of Udacity's mentors. The main inspiration of this project is clearly [htop](https://github.com/htop-dev/htop).
 
-Follow along with the classroom lesson to complete the project!
+## Installation 
+The System Monitor depends on [ncurses](https://www.gnu.org/software/ncurses/). If it is not yet installed on your machine, please do so via `sudo apt install libncurses5-dev libncursesw5-dev`.
 
-![System Monitor](images/monitor.png)
+After that simply clone this repository and compile it via ~make build~ in the folder `System-Monitor`. For more details on the building process, see [Make](https://www.gnu.org/software/make/).
 
-## Udacity Linux Workspace
-[Udacity](https://www.udacity.com/) provides a browser-based Linux [Workspace](https://engineering.udacity.com/creating-a-gpu-enhanced-virtual-desktop-for-udacity-497bdd91a505) for students. 
+## Interface
+The System Monitor is opened via `./build/monitor` (on a Linux machine). It shows the 
+* OS (e.g. Ubuntu)
+* kernel
+* accumulated CPU usage 
+* memory usage
+* number of total and running processes
+* up time
+* a list of all running processes with CPU/memory usage etc. as in the screenshot below
 
-You are welcome to develop this project on your local machine, and you are not required to use the Udacity Workspace. However, the Workspace provides a convenient and consistent Linux development environment we encourage you to try.
+![System Monitor](images/System-Monitor_07282021)
 
-## ncurses
+## Implementation
+...
+
+### ncurses
 [ncurses](https://www.gnu.org/software/ncurses/) is a library that facilitates text-based graphical output in the terminal. This project relies on ncurses for display output.
 
-Within the Udacity Workspace, `.student_bashrc` automatically installs ncurses every time you launch the Workspace.
 
-If you are not using the Workspace, install ncurses within your own Linux environment: `sudo apt install libncurses5-dev libncursesw5-dev`
 
-## Make
-This project uses [Make](https://www.gnu.org/software/make/). The Makefile has four targets:
-* `build` compiles the source code and generates an executable
-* `format` applies [ClangFormat](https://clang.llvm.org/docs/ClangFormat.html) to style the source code
-* `debug` compiles the source code and generates an executable, including debugging symbols
-* `clean` deletes the `build/` directory, including all of the build artifacts
 
-## Instructions
 
-1. Clone the project repository: `git clone https://github.com/udacity/CppND-System-Monitor-Project-Updated.git`
 
-2. Build the project: `make build`
 
-3. Run the resulting executable: `./build/monitor`
-![Starting System Monitor](images/starting_monitor.png)
-
-4. Follow along with the lesson.
-
-5. Implement the `System`, `Process`, and `Processor` classes, as well as functions within the `LinuxParser` namespace.
-
-6. Submit!
