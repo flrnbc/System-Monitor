@@ -1,5 +1,8 @@
+#include <string>
 #include "linux_parser.h"
 #include "process.h"
+
+using std::string;
 
 Process::Process(int pid) {
   pid_ = pid;
