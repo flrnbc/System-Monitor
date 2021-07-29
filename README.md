@@ -3,7 +3,9 @@
 This is a simple tool to show running processes on a Linux machine. It is based on the [starter code](https://github.com/udacity/CppND-System-Monitor) of a project in the Object Oriented Programming Course of [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213). The code in our repository has been reviewed by one of Udacity's mentors. The main inspiration of this project is clearly [htop](https://github.com/htop-dev/htop).
 
 ## Installation 
-The System Monitor depends on [ncurses](https://www.gnu.org/software/ncurses/). If it is not yet installed on your machine, please do so via `sudo apt install libncurses5-dev libncursesw5-dev`.
+The System Monitor depends on [ncurses](https://www.gnu.org/software/ncurses/). If it is not yet installed on your machine, please do so via 
+
+`sudo apt install libncurses5-dev libncursesw5-dev`
 
 After that simply clone this repository and compile it via `make build` in the folder `System-Monitor`. For more details on the building process, see [Make](https://www.gnu.org/software/make/).
 
@@ -27,7 +29,7 @@ Finally, printing the data of that class object to the terminal is done via `ncu
 
 
 ## On the starter code
-As alluded to above, the skeleton of this project was provided by Udacity. The main part was the output via `ncurses` and a small part of the `linux parser` yielding the following
+As alluded to above, the skeleton of this project was provided by Udacity. Its main part was the output via `ncurses` and a small fraction of the `linux parser` yielding the following
 
 ![Starter monitor](images/starting_monitor.png)
 
